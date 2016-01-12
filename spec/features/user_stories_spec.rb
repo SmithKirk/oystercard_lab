@@ -1,6 +1,7 @@
 describe 'User Stories' do
 
   let(:oystercard){Oystercard.new}
+  let(:station) {Station.new}
   # In order to use public transport
   # As a customer
   # I want money on my card
@@ -27,13 +28,21 @@ describe 'User Stories' do
   # As a customer
   # I need my fare deducted from my card
   it 'fare is dedeucted from card' do
-    expect{oystercard.touch_out(10)}.to change{oystercard.balance}.by(-10)
+    expect{oystercard.touch_out(station, 10)}.to change{oystercard.balance}.by(-10)
   end
 
   # In order to get through the barriers
   # As a customer
   # I need to touch in and out
-  #
+  it 'card can be touched in and out' do
+    oystercard.touch_in(station)
+    expect(oystercard.in_journey).to eq true
+    oystercard.touch_in(station)
+    oystercard.touch_out(station, 10)
+    expect(oystercard.in_journey).to eq false
+
+  end
+
   # In order to pay for my journey
   # As a customer
   # I need to have the minimum amount for a single journey
