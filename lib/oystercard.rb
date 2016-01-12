@@ -34,7 +34,9 @@ class Oystercard
     deduct(FARE)
     @out_station = out_station
     @active_trip[:out] = out_station
+    @travel_record[@travel_record.length + 1] = @active_trip
     @in_station = nil
+    @active_trip = {}
   end
 
 

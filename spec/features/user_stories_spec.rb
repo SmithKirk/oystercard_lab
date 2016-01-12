@@ -3,6 +3,9 @@ describe 'User Stories' do
   let(:oystercard){Oystercard.new}
   let(:station) {Station.new}
   let (:fare) {Oystercard::FARE}
+  let (:in_station) {double :in_station}
+  let (:out_station) {double :out_station}
+
 
   # In order to use public transport
   # As a customer
@@ -71,8 +74,12 @@ describe 'User Stories' do
   # In order to know where I have been
   # As a customer
   # I want to see to all my previous trips
-
-
+  it 'current journey added to history' do
+    oystercard.top_up(90)
+    oystercard.touch_in(in_station)
+    oystercard.touch_out(out_station)
+    expect(oystercard.travel_record).to eq ({1=>{:in => in_station, :out =>out_station}})
+  end
   # In order to know how far I have travelled
   # As a customer
   # I want to know what zone a station is in

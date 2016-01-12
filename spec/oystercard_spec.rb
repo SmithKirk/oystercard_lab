@@ -67,18 +67,26 @@ describe Oystercard do
     expect(oystercard.travel_record).to be_empty
   end
 
-  it 'start of journey stored' do
+  xit 'start of journey stored' do
     oystercard.top_up(90)
     oystercard.touch_in(in_station)
     oystercard.touch_out(out_station)
     expect(oystercard.active_trip[:in]).to eq in_station
   end
 
-  it 'end of journey stored' do
+  xit 'end of journey stored' do
     oystercard.top_up(90)
     oystercard.touch_in(in_station)
     oystercard.touch_out(out_station)
     expect(oystercard.active_trip[:out]).to eq out_station
+  end
+
+  it 'current journey added to history' do
+    oystercard.top_up(90)
+    oystercard.touch_in(in_station)
+    oystercard.touch_out(out_station)
+    expect(oystercard.travel_record).to eq ({1=>{:in => in_station, :out =>out_station}})
+
   end
 
 end
