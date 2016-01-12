@@ -28,25 +28,28 @@ describe 'User Stories' do
   # As a customer
   # I need my fare deducted from my card
   it 'fare is dedeucted from card' do
-    expect{oystercard.touch_out(station, 10)}.to change{oystercard.balance}.by(-10)
+    expect{oystercard.touch_out(station)}.to change{oystercard.balance}.by(-1)
   end
 
   # In order to get through the barriers
   # As a customer
   # I need to touch in and out
   it 'card can be touched in and out' do
+    oystercard.top_up(90)
     oystercard.touch_in(station)
     expect(oystercard.in_journey).to eq true
     oystercard.touch_in(station)
-    oystercard.touch_out(station, 10)
+    oystercard.touch_out(station)
     expect(oystercard.in_journey).to eq false
-
   end
 
   # In order to pay for my journey
   # As a customer
   # I need to have the minimum amount for a single journey
-  #
+  it 'enforce a minimum balance to travel' do
+    expect{oystercard.touch_in(station)}.to raise_error "Card below £1 minimum"
+  end
+
   # In order to pay for my journey
   # As a customer
   # I need to pay for my journey when it's complete
