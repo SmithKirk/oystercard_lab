@@ -5,6 +5,9 @@ describe Oystercard do
   subject(:oystercard) {described_class.new}
   let (:station) {double :station}
   let (:fare) {Oystercard::FARE}
+  let (:in_station) {double :in_station}
+  let (:out_station) {double :out_station}
+
 
   it 'new card has balance' do
     expect(oystercard.balance).to eq 0
@@ -26,14 +29,14 @@ describe Oystercard do
   it 'touch_in changes in journey? to true' do
     oystercard.top_up(90)
     oystercard.touch_in(station)
-    expect(oystercard.in_journey).to eq true
+    expect(oystercard.in_journey?).to eq true
   end
 
   it 'touch_out changes in journey? to true' do
     oystercard.top_up(90)
     oystercard.touch_in(station)
     oystercard.touch_out(station)
-    expect(oystercard.in_journey).to eq false
+    expect(oystercard.in_journey?).to eq false
   end
 
   it 'will not touch in if below minimum balance' do
@@ -44,6 +47,38 @@ describe Oystercard do
     oystercard.top_up(90)
     oystercard.touch_in(station)
     expect(oystercard.in_station).to eq station
+  end
+
+  it 'entry station cleared on touch out' do
+    oystercard.top_up(90)
+    oystercard.touch_in(station)
+    oystercard.touch_out(station)
+    expect(oystercard.in_station).to eq nil
+  end
+
+  it 'exit station is stored on touch_out' do
+    oystercard.top_up(90)
+    oystercard.touch_in(station)
+    oystercard.touch_out(station)
+    expect(oystercard.out_station).to eq station
+  end
+
+  it 'a new card has an empty journey list' do
+    expect(oystercard.travel_record).to be_empty
+  end
+
+  it 'start of journey stored' do
+    oystercard.top_up(90)
+    oystercard.touch_in(in_station)
+    oystercard.touch_out(out_station)
+    expect(oystercard.active_trip[:in]).to eq in_station
+  end
+
+  it 'end of journey stored' do
+    oystercard.top_up(90)
+    oystercard.touch_in(in_station)
+    oystercard.touch_out(out_station)
+    expect(oystercard.active_trip[:out]).to eq out_station
   end
 
 end

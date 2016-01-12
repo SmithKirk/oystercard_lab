@@ -39,10 +39,10 @@ describe 'User Stories' do
   it 'card can be touched in and out' do
     oystercard.top_up(90)
     oystercard.touch_in(station)
-    expect(oystercard.in_journey).to eq true
+    expect(oystercard.in_journey?).to eq true
     oystercard.touch_in(station)
     oystercard.touch_out(station)
-    expect(oystercard.in_journey).to eq false
+    expect(oystercard.in_journey?).to eq false
   end
 
   # In order to pay for my journey
@@ -71,7 +71,8 @@ describe 'User Stories' do
   # In order to know where I have been
   # As a customer
   # I want to see to all my previous trips
-  #
+
+
   # In order to know how far I have travelled
   # As a customer
   # I want to know what zone a station is in
